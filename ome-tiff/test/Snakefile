@@ -10,4 +10,4 @@ rule run_vitessce:
         out_dir="data"
     threads: 1
     wrapper:
-        "file:///Users/mkeller/research/dbmi/vitessce/snakemake-wrappers/"
+        "file:///Users/mkeller/research/dbmi/vitessce/snakemake-wrappers/ome-tiff/"
