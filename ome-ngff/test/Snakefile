@@ -1,0 +1,35 @@
+import zarr
+import s3fs
+
+rule all:
+    input:
+        "data/vitessce.config.json"
+
+rule configure_vitessce:
+    input:
+        images=[
+            "data/raw/3491626.zarr"
+        ]
+    output:
+        "data/vitessce.config.json"
+    params:
+        name="Test",
+        out_dir="data",
+        port=8001
+    threads: 1
+    wrapper:
+        "file:///Users/mkeller/research/dbmi/vitessce/snakemake-wrappers/ome-ngff/"
+
+rule download_image:
+    output:
+        directory("data/raw/3491626.zarr")
+    params:
+        endpoint_url="https://uk1s3.embassy.ebi.ac.uk",
+        store_path="idr/zarr/v0.3/idr0040A/3491626.zarr"
+    run:
+        s3 = s3fs.S3FileSystem(anon=True, client_kwargs=dict(endpoint_url=params.endpoint_url))
+        store = s3fs.S3Map(root=params.store_path, s3=s3, check=False)
+        root = zarr.group(store=store)
+        source = root.store
+        dest = zarr.DirectoryStore(output[0])
+        zarr.copy_store(source, dest)

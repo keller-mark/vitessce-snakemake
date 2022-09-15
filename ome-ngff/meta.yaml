@@ -1,0 +1,14 @@
+name: "vitessce ome-ngff"
+description: Create a Vitessce configuration based on an OME-NGFF Zarr store.
+url: https://github.com/keller-mark/vitessce-snakemake
+authors:
+  - Mark Keller
+input:
+  - images: OME-NGFF files containing microscopy images.
+output:
+  - Vitessce JSON configuration file.
+params:
+  name: Configuration name.
+  description: Configuration description.
+  out_dir: Output directory for processed files.
+  port: Port on which to serve processed files. By default, 8000.
